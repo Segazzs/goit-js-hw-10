@@ -21,3 +21,10 @@ jobs:
         with:
           branch: gh-pages
           folder: dist
+      - name: Install, build & copy static files
+        run: |
+          npm install
+          npm run build
+          mkdir -p dist/js dist/css
+          cp js/1-timer.js dist/js/
+          cp css/1-timer.css dist/css/
