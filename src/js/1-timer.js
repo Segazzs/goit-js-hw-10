@@ -46,30 +46,34 @@ const options = {
 
     if (valid > 0) {
       button.disabled = false;
-
-      button.addEventListener('click', function () {
-        let timerId = setInterval(() => {
-          valid = valid - 1000;
-
-          let arr = Object.values(convertMs(valid));
-
-          for (let i = 0; i < value.length; i++) {
-            value[i].innerHTML = addLeadingZero(arr[i]);
-          }
-
-          console.log(valid);
-          if (valid <= 1000) {
-            clearInterval(timerId);
-          }
-        }, 1000);
-
-        button.disabled = true;
-      });
     } else {
       iziToast.error({ message: 'Please choose a date in the future' });
       button.disabled = true;
     }
   },
 };
+
+button.addEventListener('click', function () {
+  let date = Date.now();
+
+  let valid = userSelectedDate - date;
+  datetime.disabled = true;
+  let timerId = setInterval(() => {
+    valid = valid - 1000;
+
+    let arr = Object.values(convertMs(valid));
+
+    for (let i = 0; i < value.length; i++) {
+      value[i].innerHTML = addLeadingZero(arr[i]);
+    }
+
+    if (valid <= 1000) {
+      clearInterval(timerId);
+      datetime.disabled = false;
+    }
+  }, 1000);
+
+  button.disabled = true;
+});
 
 flatpickr(datetime, options);
